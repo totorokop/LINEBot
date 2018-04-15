@@ -21,7 +21,7 @@
 #  version = "2.4.0"
 
 [metadata.heroku]
-  root-package = "github.com/ryomak/circlebank"
+  root-package = "github.com/TinyKitten/linebot"
 
 [[constraint]]
   name = "github.com/gin-gonic/gin"
