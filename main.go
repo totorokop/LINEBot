@@ -39,7 +39,7 @@ func main() {
 				case *linebot.TextMessage:
 					source := event.Source
 					if source.Type == linebot.EventSourceTypeRoom {
-						postMessage := linebot.NewTextMessage(message.Text)
+						postMessage := linebot.NewTextMessage("OK: " + message.Text)
 						if _, err = bot.ReplyMessage(event.ReplyToken, postMessage).Do(); err != nil {
 							log.Print(err)
 						}
