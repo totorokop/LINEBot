@@ -1,1 +1,1 @@
-web: linebot
+web: godlikebot
