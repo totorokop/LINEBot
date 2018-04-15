@@ -105,7 +105,7 @@ func getNearStation(lat float64, lon float64) (station *NearStationResponse, err
 	client := &http.Client{}
 	latStr := strconv.FormatFloat(lat, 'f', 10, 64)
 	lonStr := strconv.FormatFloat(lon, 'f', 10, 64)
-	resp, err := client.Get("https://sapi.tinykitten.me/v1/station/near?" + latStr + "&lon=" + lonStr)
+	resp, err := client.Get("https://sapi.tinykitten.me/v1/station/near?lat=" + latStr + "&lon=" + lonStr)
 	if err != nil {
 		return nil, err
 	}
