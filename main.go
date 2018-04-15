@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strconv"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -36,6 +37,15 @@ func main() {
 		for _, event := range received {
 			if event.Type == linebot.EventTypeMessage {
 				switch message := event.Message.(type) {
+				case *linebot.LocationMessage:
+					latStr := strconv.FormatFloat(message.Latitude, 'f', 6, 64)
+					lonStr := strconv.FormatFloat(message.Longitude, 'f', 6, 64)
+
+					postMessage := linebot.NewTextMessage("緯度: " + latStr + " 経度: " + lonStr)
+
+					if _, err = bot.ReplyMessage(event.ReplyToken, postMessage).Do(); err != nil {
+						log.Print(err)
+					}
 				case *linebot.TextMessage:
 					// source := event.Source
 					postMessage := linebot.NewTextMessage("OK: " + message.Text)
