@@ -52,12 +52,14 @@ func main() {
 					if _, err = bot.ReplyMessage(event.ReplyToken, postMessage).Do(); err != nil {
 						log.Print(err)
 					}
-				case *linebot.TextMessage:
-					// source := event.Source
-					postMessage := linebot.NewTextMessage("OK: " + message.Text)
-					if _, err = bot.ReplyMessage(event.ReplyToken, postMessage).Do(); err != nil {
-						log.Print(err)
-					}
+					/*
+						case *linebot.TextMessage:
+							// source := event.Source
+							postMessage := linebot.NewTextMessage("OK: " + message.Text)
+							if _, err = bot.ReplyMessage(event.ReplyToken, postMessage).Do(); err != nil {
+								log.Print(err)
+							}
+					*/
 				}
 			}
 		}
