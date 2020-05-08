@@ -6,9 +6,9 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"strconv"
 	"time"
 
+	"github.com/TinyKitten/LINEBot/models"
 	"github.com/gin-gonic/gin"
 	"github.com/line/line-bot-sdk-go/linebot"
 	"github.com/machinebox/graphql"
@@ -40,7 +40,7 @@ func main() {
 			if event.Type == linebot.EventTypeMessage {
 				switch message := event.Message.(type) {
 				case *linebot.LocationMessage:
-					nearStation, err := getClosestStation(message.Latitude, message.Longitude)
+					closestStation, err := getClosestStation(message.Latitude, message.Longitude)
 					if err != nil {
 						postMessage := linebot.NewTextMessage("ERROR: " + err.Error())
 						if _, err = bot.ReplyMessage(event.ReplyToken, postMessage).Do(); err != nil {
@@ -48,7 +48,18 @@ func main() {
 						}
 					}
 
-					postMessage := linebot.NewTextMessage("最寄り駅は、" + nearStation.Name + "駅です。")
+					stationName := closestStation.StationByCoords.Name
+					stationAddr := closestStation.StationByCoords.Address
+					lines := closestStation.StationByCoords.Lines
+					linesStr := ""
+					for i, line := range lines {
+						if i != len(lines)-1 {
+							linesStr += fmt.Sprintf("%s\n", line.Name)
+						} else {
+							linesStr += fmt.Sprintf("%s", line.Name)
+						}
+					}
+					postMessage := linebot.NewTextMessage(fmt.Sprintf("最寄り駅情報\n%s駅\n%s\n\n利用可能路線:\n%s", stationName, stationAddr, linesStr))
 					if _, err = bot.ReplyMessage(event.ReplyToken, postMessage).Do(); err != nil {
 						log.Print(err)
 					}
@@ -60,21 +71,7 @@ func main() {
 	router.Run(":" + port)
 }
 
-// ClosestStationResponse is GraphQL query response
-type ClosestStationResponse struct {
-	Address string
-	Name    string
-	Lines   []ClosestStationLine
-}
-
-// ClosestStationLine is GraphQL query response
-type ClosestStationLine struct {
-	Name string
-}
-
-func getClosestStation(lat float64, lon float64) (station *ClosestStationResponse, err error) {
-	latStr := strconv.FormatFloat(lat, 'f', 10, 64)
-	lonStr := strconv.FormatFloat(lon, 'f', 10, 64)
+func getClosestStation(lat float64, lon float64) (station *models.StationByCoordsResponse, err error) {
 	client := graphql.NewClient("https://sapi.tinykitten.me/")
 	req := graphql.NewRequest(`
     query ($latitude: Float!, $longitude: Float!) {
@@ -87,13 +84,13 @@ func getClosestStation(lat float64, lon float64) (station *ClosestStationRespons
 		}
 	  }
 	`)
-	req.Var("latitude", latStr)
-	req.Var("longitude", lonStr)
+	req.Var("latitude", lat)
+	req.Var("longitude", lon)
 
 	ctx := context.Background()
 
 	// run it and capture the response
-	var result ClosestStationResponse
+	var result models.StationByCoordsResponse
 	if err := client.Run(ctx, req, &result); err != nil {
 		log.Fatal(err)
 	}
