@@ -72,7 +72,7 @@ func main() {
 }
 
 func getClosestStation(lat float64, lon float64) (station *models.StationByCoordsResponse, err error) {
-	client := graphql.NewClient("https://sapi.tinykitten.me/")
+	client := graphql.NewClient("https://sapi.tinykitten.me/graphql")
 	req := graphql.NewRequest(`
     query ($latitude: Float!, $longitude: Float!) {
 		stationByCoords(latitude: $latitude, longitude: $longitude) {
@@ -89,7 +89,6 @@ func getClosestStation(lat float64, lon float64) (station *models.StationByCoord
 
 	ctx := context.Background()
 
-	// run it and capture the response
 	var result models.StationByCoordsResponse
 	if err := client.Run(ctx, req, &result); err != nil {
 		log.Fatal(err)

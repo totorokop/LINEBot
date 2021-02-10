@@ -8,11 +8,15 @@ require (
 	github.com/golang/protobuf v1.0.0 // indirect
 	github.com/line/line-bot-sdk-go v1.0.0
 	github.com/machinebox/graphql v0.2.2
+	github.com/matryer/is v1.4.0 // indirect
 	github.com/mattn/go-isatty v0.0.3 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
+	github.com/stretchr/testify v1.7.0 // indirect
 	github.com/ugorji/go v1.1.1 // indirect
 	golang.org/x/net v0.0.0-20180406214816-61147c48b25b // indirect
+	golang.org/x/sync v0.0.0-20201207232520-09787c993a3a // indirect
 	golang.org/x/sys v0.0.0-20180414092825-2281fa97ef7b // indirect
+	gopkg.in/go-playground/assert.v1 v1.2.1 // indirect
 	gopkg.in/go-playground/validator.v8 v8.18.2 // indirect
 	gopkg.in/yaml.v2 v2.2.1 // indirect
 )
