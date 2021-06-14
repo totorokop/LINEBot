@@ -5,9 +5,10 @@ type StationByCoordsResponse struct {
 }
 
 type StationByCoords struct {
-	Address string `json:"address"`
-	Lines   []Line `json:"lines"`
-	Name    string `json:"name"`
+	Address  string  `json:"address"`
+	Lines    []Line  `json:"lines"`
+	Name     string  `json:"name"`
+	Distance float64 `json:"distance"`
 }
 
 type Line struct {
