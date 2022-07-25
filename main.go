@@ -52,10 +52,10 @@ func main() {
 						}
 					}
 
-					stationName := closestStation.StationByCoords.Name
-					stationAddr := closestStation.StationByCoords.Address
-					distance := closestStation.StationByCoords.Distance
-					lines := closestStation.StationByCoords.Lines
+					stationName := closestStation.NearbyStations[0].Name
+					stationAddr := closestStation.NearbyStations[0].Address
+					distance := closestStation.NearbyStations[0].Distance
+					lines := closestStation.NearbyStations[0].Lines
 					linesStr := ""
 					for i, line := range lines {
 						if i != len(lines)-1 {
@@ -84,11 +84,11 @@ func main() {
 	router.Run(":" + port)
 }
 
-func getClosestStation(lat float64, lon float64) (station *models.StationByCoordsResponse, err error) {
+func getClosestStation(lat float64, lon float64) (station *models.NearbyStationsResponse, err error) {
 	client := graphql.NewClient("https://sapi.tinykitten.me/graphql")
 	req := graphql.NewRequest(`
     query ($latitude: Float!, $longitude: Float!) {
-		stationByCoords(latitude: $latitude, longitude: $longitude) {
+		nearbyStations(latitude: $latitude, longitude: $longitude) {
 		  name
 		  address
 		  distance
@@ -103,7 +103,7 @@ func getClosestStation(lat float64, lon float64) (station *models.StationByCoord
 
 	ctx := context.Background()
 
-	var result models.StationByCoordsResponse
+	var result models.NearbyStationsResponse
 	if err := client.Run(ctx, req, &result); err != nil {
 		log.Fatal(err)
 	}

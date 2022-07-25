@@ -1,10 +1,10 @@
 package models
 
-type StationByCoordsResponse struct {
-	StationByCoords StationByCoords `json:"stationByCoords"`
+type NearbyStationsResponse struct {
+	NearbyStations []NearbyStations `json:"nearbyStations"`
 }
 
-type StationByCoords struct {
+type NearbyStations struct {
 	Address  string  `json:"address"`
 	Lines    []Line  `json:"lines"`
 	Name     string  `json:"name"`
